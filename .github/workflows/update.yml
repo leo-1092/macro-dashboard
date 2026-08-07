@@ -1,0 +1,46 @@
+name: 매크로 대시보드 자동 업데이트
+
+on:
+  schedule:
+    # KST 09:00~17:00 매시간 (UTC 기준 00:00~08:00)
+    - cron: '0 0 * * 1-5'   # KST 09:00 (월~금)
+    - cron: '0 1 * * 1-5'   # KST 10:00
+    - cron: '0 2 * * 1-5'   # KST 11:00
+    - cron: '0 3 * * 1-5'   # KST 12:00
+    - cron: '0 4 * * 1-5'   # KST 13:00
+    - cron: '0 5 * * 1-5'   # KST 14:00
+    - cron: '0 6 * * 1-5'   # KST 15:00
+    - cron: '0 7 * * 1-5'   # KST 16:00
+    - cron: '0 8 * * 1-5'   # KST 17:00
+  workflow_dispatch:         # 수동 실행 버튼
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Python 설정
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 패키지 설치
+        run: pip install yfinance pandas pdfplumber requests
+
+      - name: 대시보드 업데이트 실행
+        env:
+          FIN_AAA_RATE: ''   # 금융채 입력 없음 → fin_aaa_last.txt 마지막값 사용
+        run: python update_dashboard.py --no-push
+
+      - name: GitHub Pages 배포 (commit & push)
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.html 시장지표_대시보드.html
+          git diff --staged --quiet || git commit -m "Auto update: $(TZ='Asia/Seoul' date '+%Y.%m.%d %H:%M')"
+          git push
