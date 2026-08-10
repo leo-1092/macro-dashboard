@@ -1,3 +1,4 @@
 ﻿뉴스/*.pdf
 __pycache__/
 *.pyc
+../gh_token.txt

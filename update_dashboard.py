@@ -1063,8 +1063,11 @@ if NO_PUSH:
     print("GitHub push 생략 (--no-push 모드, Actions가 처리)")
 else:
     GIT   = r"C:\Program Files\Git\bin\git.exe"
-    TOKEN = os.environ.get('GH_PAT', '')
-    REMOTE_URL = f"https://leo-1092:{TOKEN}@github.com/leo-1092/macro-dashboard.git" if TOKEN else None
+    # 토큰: 환경변수 → 로컬 토큰 파일 순으로 읽기
+    _token_file = os.path.join(os.path.dirname(BASE_DIR), 'gh_token.txt')
+    TOKEN = (os.environ.get('GH_PAT', '') or
+             (open(_token_file).read().strip() if os.path.exists(_token_file) else ''))
+    REMOTE_URL = f"https://leo-1092:{TOKEN}@github.com/leo-1092/macro-dashboard.git"
     try:
         print("GitHub push 중...")
         subprocess.run([GIT, "remote", "set-url", "origin", REMOTE_URL],
