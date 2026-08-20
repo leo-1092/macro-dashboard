@@ -34,8 +34,12 @@ jobs:
 
       - name: 대시보드 업데이트 실행
         env:
-          FIN_AAA_RATE: ''   # 금융채 입력 없음 → fin_aaa_last.txt 마지막값 사용
-        run: python update_dashboard.py --no-push
+          FIN_AAA_RATE: ${{ secrets.FIN_AAA_RATE }}
+        run: |
+          if [ -n "$FIN_AAA_RATE" ]; then
+            printf "\xEF\xBB\xBF${FIN_AAA_RATE}" > fin_aaa_last.txt
+          fi
+          python update_dashboard.py --no-push
 
       - name: GitHub Pages 배포 (commit & push)
         run: |
