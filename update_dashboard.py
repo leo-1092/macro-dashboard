@@ -99,6 +99,7 @@ d5y = date_ago(years=5)    # 2021-07-28
 
 # 한국 기준금리 경로 (금통위 변경 시 업데이트)
 def kr_base_at(d):
+    if d >= datetime.date(2026,8,27): return 3.00
     if d >= datetime.date(2026,7,16): return 2.75
     if d >= datetime.date(2025,5,29): return 2.50
     if d >= datetime.date(2025,2,25): return 2.75
