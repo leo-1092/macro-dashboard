@@ -119,6 +119,7 @@ def kr_base_at(d):
 
 # 미국 기준금리 경로 (FOMC 변경 시 업데이트)
 def us_base_at(d):
+    if d >= datetime.date(2026,9,17):  return 4.00
     if d >= datetime.date(2025,12,10): return 3.75
     if d >= datetime.date(2025,10,29): return 4.00
     if d >= datetime.date(2025,9,17):  return 4.25
