@@ -565,7 +565,7 @@ market_data = {
     "us": {
         "title": "해외 금리",
         "items": [
-            mk(US_BASE_RATE, US_BASE_HISTORY, "미국 기준금리", "%"),
+            mk(US_BASE_RATE, US_BASE_HISTORY, "미국 기준금리(상단)", "%"),
             mk(us2y_v,  us2y_h,  "미국채 2Y", "%"),
             mk(us10y_v, us10y_h, "미국채 10Y", "%"),
             mk(sofr_v,  sofr_h,  "SOFR", "%"),
